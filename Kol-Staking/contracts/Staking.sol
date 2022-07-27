@@ -25,6 +25,9 @@ contract Stake {
         require(msg.sender == owner);
         _;
     }
+
+    
+
     
     function addKolToken(address _kol) public onlyOwner {
         kol = _kol;
@@ -34,6 +37,9 @@ contract Stake {
         owner = _owner;
     }
 
+
+    
+
     /**
     * @notice Stake KOL tokens.
     * @dev  transfer KOL tokens from msg.sender to this contract
@@ -42,14 +48,16 @@ contract Stake {
     * Emits a {tokenStaked} event.
     */
 
+    
     function stakeTokens(address token, uint256 amount) external {
-        require(amount!=0,"AZ"); //amount zero
+
         require(token == kol, "Not KOL Token");
+
         IERC20(token).transferFrom(msg.sender, address(this), amount);
         _balances[msg.sender] = _balances[msg.sender]+amount;
-        //console.log("Balance of contract",IERC20(token).balanceOf(address(this)));  
-        //console.log("Sender balance", IERC20(token).balanceOf(msg.sender));
-        emit tokenStaked(msg.sender, amount, _balances[msg.sender], block.timestamp);
+
+        emit tokenStaked(msg.sender, amount, _balances[msg.sender],block.timestamp);
+        
     }
 
     /**
@@ -62,7 +70,7 @@ contract Stake {
     */
 
     function withDraw(address token, uint256 amount) external{
-        require(amount!=0,"AZ"); //amount zero
+
         require(token == kol, "Not KOL TOKEN");
         require(amount <= _balances[msg.sender], "Invalid Amount");
         _balances[msg.sender] = _balances[msg.sender]-amount;
@@ -118,6 +126,7 @@ contract Stake {
         return(encodedData);
     }    
 
+
     function recoverSigner(bytes memory sig,bytes32 _hash) //signature, hash
         internal
         pure
@@ -151,4 +160,6 @@ contract Stake {
 
         return (v, r, s);
     }
+
+
 }

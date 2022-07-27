@@ -18,7 +18,7 @@ const encode1 = async () =>{
     }
     console.log(data); 
     hash = web3.utils.keccak256(data);
-    const tx=web3.eth.accounts.sign(hash, 'PK');
+    const tx=web3.eth.accounts.sign(hash, '859e925c4a8173a9ffea74ad1d93fc8b2392f7175be6ec8b9140af61d9d1f16c');
     console.log(tx);
 }
 
