@@ -126,8 +126,10 @@ describe("03- Burn token testcases", () => {
     });
 
     // run this before commenting the other burn function
-    it.skip("3.2- Burning kol token equal to balance", async function () {
-        const tx = await token.burn(web3.utils.toWei("1000"));
+    it("3.2- Burning kol token equal to balance", async function () {
+        const total_blance = await token.balanceOf(owner.address)
+        // console.log(total_blance)
+        const tx = await token.burn(total_blance);
         // console.log(tx);
     });
 
@@ -142,6 +144,7 @@ describe("03- Burn token testcases", () => {
     });
 
     it("3.5- Burning kol token in decimal values", async function () {
+        await token.mint(owner.address, web3.utils.toWei("1000"));
         const tx1 = await token.burn(web3.utils.toWei("0.5"));
         // console.log(tx);
     });
@@ -175,9 +178,9 @@ describe("04- Transfer token testcases", () => {
     });
 
     // run this before commenting the other burn function
-    it.skip("4.3- Transfer kol token equal to balance", async function () {
-        let total_blance = await token.balanceOf(owner.address)
-        const tx = await token.transfer('0x287cf34b46797570c74bd367dc081b57d2a52a88', web3.utils.toWei(total_blance));
+    it("4.3- Transfer kol token equal to balance", async function () {
+        const total_blance = await token.balanceOf(owner.address)
+        const tx = await token.transfer('0x287cf34b46797570c74bd367dc081b57d2a52a88', total_blance);
         // console.log(tx);
     });
 
@@ -188,6 +191,7 @@ describe("04- Transfer token testcases", () => {
    });
 
     it("4.5- Transfer kol token in decimal values", async function () {
+        await token.mint(owner.address, web3.utils.toWei("1000"));
         const tx = await token.transfer('0x287cf34b46797570c74bd367dc081b57d2a52a88', web3.utils.toWei('0.5'));
         // console.log(tx);
     });
@@ -234,38 +238,32 @@ describe("05- Allownce Checking testcases", () => {
         expect(allownce_check).to.be.eq(0)
     });
 
-    it("5.3- Allownce checking for zero address", async function () {
-        const allownce_check = await token.allowance(owner.address, '0x0000000000000000000000000000000000000000');
-        // console.log('Current Allownce: ', web3.utils.fromWei(String(allownce_check)));
-        expect(allownce_check).to.be.eq(0)
-    });
-
     it("5.4- Increase Allownce and check", async function () {
         const before_increase = await token.allowance(owner.address, '0x287cf34b46797570c74bd367dc081b57d2a52a88');
-        console.log(before_increase);
+        // console.log(before_increase);
         const allownce_increase = await token.increaseAllowance('0x287cf34b46797570c74bd367dc081b57d2a52a88', web3.utils.toWei("500"));
         // console.log(allownce_increase);
         const after_increase = await token.allowance(owner.address, '0x287cf34b46797570c74bd367dc081b57d2a52a88');
-        console.log(after_increase);
+        // console.log(after_increase);
 
     });
 
-    it("Decrease Allownce", async function () {
+    it("5.5- Decrease Allownce", async function () {
         const allownce_decrease = await token.decreaseAllowance('0x287cf34b46797570c74bd367dc081b57d2a52a88', web3.utils.toWei("300"));
         // console.log(allownce_decrease);
         const allownce_check = await token.allowance(owner.address, '0x287cf34b46797570c74bd367dc081b57d2a52a88');
-        console.log(allownce_check);
+        // console.log(allownce_check);
     });
 
 
 })
-describe.skip("06- Other testcases", () => {
-    it("Total supply", async function () {
+describe("06- Other testcases", () => {
+    it("6.1- Total supply", async function () {
         const tx = await token.totalSupply()
         console.log(tx);
     });
 
-    it("Token Decimal", async function () {
+    it("6.2- Token Decimal", async function () {
         const token_dec = await token.decimals();
         console.log(token_dec);
     });
